@@ -1,0 +1,6 @@
+fields:
+  household_name: f.lastName
+children:
+  - Address: 0-2
+  - Email: 0-1
+  - Phone: 0-2

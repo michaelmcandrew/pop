@@ -1,0 +1,19 @@
+{
+    "name": "michaelmcandrew/pop",
+    "description": "A library for populating a CiviCRM site with fake data",
+    "type": "library",
+    "require": {
+        "fzaninotto/faker": "@stable",
+        "twig/twig": "@stable"
+    },
+    "license": "AGPL-3.0",
+    "authors": [{
+        "name": "Michael McAndrew",
+        "email": "michaelmcandrew@thirdsectordesign.org"
+    }],
+    "autoload": {
+        "psr-4": {
+            "Civi\\Pop\\": "src/Pop"
+        }
+    }
+}

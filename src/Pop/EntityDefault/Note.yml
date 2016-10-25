@@ -1,0 +1,3 @@
+fields:
+  entity_id: r.contact
+  note: f.paragraph

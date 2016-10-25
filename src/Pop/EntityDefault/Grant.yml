@@ -1,0 +1,9 @@
+fields:
+  status_id: choose
+  amount_total: f.randomFloat,0,500,5000
+  grant_report_received:
+    1: 3
+    0: 1  
+  application_received_date:
+    'f.dateTimeBetween,-3 years,-1 years': 1
+    '': 1

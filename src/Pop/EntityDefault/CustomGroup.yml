@@ -1,0 +1,7 @@
+fields:
+  extends:
+    Contact: 1
+    Individual: 1
+    Household: 1
+    Organization: 1
+    Activity: 1

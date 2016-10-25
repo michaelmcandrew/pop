@@ -1,0 +1,3 @@
+fields:
+  entity_id: r.Contact
+  tag_id: r.Tag

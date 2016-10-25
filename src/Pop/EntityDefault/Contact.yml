@@ -1,0 +1,5 @@
+fields:
+  first_name: f.firstName
+  last_name: f.lastName
+  household_name: f.lastName
+  organization_name: f.company

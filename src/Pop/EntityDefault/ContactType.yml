@@ -1,0 +1,5 @@
+fields:
+  parent_id:
+    Individual: 1
+    Household: 1
+    Organization: 1

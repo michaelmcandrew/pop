@@ -1,0 +1,2 @@
+fields:
+  total_amount: f.randomFloat,2,1,100

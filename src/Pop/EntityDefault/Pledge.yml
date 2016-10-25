@@ -1,0 +1,10 @@
+fields:
+  installments:
+    3: 4
+    5: 2
+    6: 2
+    10: 4
+    12: 5
+    24: 1
+  start_date: f.dateTimeBetween,-5 years,1 year
+  amount: f.randomFloat,2,1,100

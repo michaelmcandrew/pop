@@ -221,15 +221,15 @@ class Pop {
 
     // if this is a child of another entity, populate the parent id
     if($parent){
-      $definition['fields']["{$parent['entity']}_id"]=$parent['id'];
+      $definition['fields'][strtolower("{$parent['entity']}_id")]=$parent['id'];
     }
+
 
     // create each entity
     $count = 0;
     while($count < $definition['count']){
 
       $createdEntity = $this->populate($definition['entity'], $definition['fields'], $definition['populators']);
-
       // create children if necessary
       if(isset($definition['children'])){;
         foreach($definition['children'] as $childInstruction){
@@ -377,13 +377,12 @@ class Pop {
       $x++;
     }
     foreach($this->summary as $entity => $stats){
-      $this->log("\033[K<fg=green>{$entity}: {$stats['count']} ");
       if($stats['first_id'] && $stats['first_id']==$stats['last_id']){
-        $this->log("({$stats['first_id']})</>");
+        $this->log("\033[K<fg=green>{$entity}: {$stats['count']} ({$stats['first_id']})</>");
       }elseif($stats['first_id'] < $stats['last_id']){
-        $this->log("({$stats['first_id']} to {$stats['last_id']})</>");
+        $this->log("\033[K<fg=green>{$entity}: {$stats['count']} ({$stats['first_id']} to {$stats['last_id']})</>");
       }else{
-        $this->log("(unknown ids)</>");
+        $this->log("\033[K<fg=green>{$entity}: {$stats['count']} (unknown ids)</>");
       }
     }
   }

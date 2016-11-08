@@ -12,6 +12,7 @@ class EntityStore {
   private $entityParams = array('Event' => array('is_template' => false));
 
   function getRandom($entity, $filter = NULL){
+
     $key = $this->getKey($entity, $filter);
     return $this->store[$key][$this->getRandomId($entity, $filter)];
   }
@@ -32,7 +33,11 @@ class EntityStore {
     return array_rand($this->store[$key]);
   }
 
-  function getKey($entity, $filter){
+  function getKey(&$entity, &$filter){
+    if(in_array($entity, array('Individual', 'Household', 'Organization'))){
+      $filter['contact_type'] = $entity;
+      $entity = 'Contact';
+    }
     $key = $entity;
     if(isset($filter)){
       ksort($filter);

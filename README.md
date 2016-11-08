@@ -139,9 +139,10 @@ Required options are populated automatically. Sometimes, you may want to request
 The most common CiviCRM entities are tested to ensure they work with Pop. Other entities may or may not work. The entityProvider function in the [Pop test suite](https://github.com/michaelmcandrew/cv/blob/pop/tests/Command/PopCommandTest.php)) tests has the most up to date list of tested entities.
 
 # Hopes and dreams
-* More support for entities. For many, the issues can be solved by updating the underlying API (adding api.required for certain fields, etc.)
-* use twig as templating language for fields (in the same way that ansible uses Jinja)
-* command to create one set of entities, rather than read from a pop file e.g. `civipop -e Individual -c 300`
+
+* Support more entities.
+* Use twig as templating language for fields (in the same way that ansible uses Jinja)
+* Add command to create a single set of entities (easier than reading a pop file), e.g. `civipop -e Individual -c 300`
 * read from stdin
-* allow fields to duplicate each other. So that, for example, email can be set as {$first_name}.{$last_name}@example.org
-* create a batch for all entities each time pop is run so that they can be easily found and deleted
+* allow fields to reference each other. So that, for example, email can be set as {$first_name}.{$last_name}@{current_employer}.org
+* Asign all created entities to a batch each time pop is run so that they can be easily found and deleted in future.

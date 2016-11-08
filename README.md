@@ -1,8 +1,8 @@
 # Pop
 
-A library for populating a CiviCRM site with fake data
+A library for populating a CiviCRM site with fake data.
 
-# Usage
+## Usage
 
 Typical usage is via a command line tool like '[cv](https://github.com/civicrm/cv)'.
 
@@ -12,69 +12,70 @@ To populate a site with instructions in the file `/path/to/pop.yml`, type
 cv pop /path/to/pop.yml
 ```
 
-# Syntax
+Pop is also available via composer:
+
+`composer require michaelmcandrew\pop`
+
+## Syntax
 
 Pop files are a series of instructions written in yaml. Each instruction creates
-one or more entities.
+one or more entities. Some examples will help explain the syntax.
 
-## Simple examples
-
-Create 5000 Individuals
+You can use Pop to create 500 Individuals:
 
 ```yaml
-- Individual: 5000 # Sensible default fields will be created
+- Individual: 500
 ```
 
-Create a few different entities
+Many instructions can be combined into a single file and will be carried out one after the other:
 
 ```yaml
-- Organization: 50
+- Organization: 500
+- Individual: 5000
+- Event: 80
 - MembershipType: 5
 - Membership: 500
 ```
 
-Specify **fields**
-```yaml
-- Individual: 5000
-  fields:
-    job_title: f.jobTitle # see *Accessing Faker Methods* below
-```
+Pop uses realistic default fields when creating entities and creates realistic  'child entities' when appropriate.
 
-
-Specify **children**
-```yaml
-- Event: 20
-  children: # When adding children causes the 'parent' id is passed to the child entity
-  - Participant: 100
-
-```
-
-## Supported entities
-
-A subset of CiviCRM entities are tested to work with Pop. These are listed ***HERE***.
-
-Non tested entities may also work but are not garunteed to do so.
-
-Contributions that get more entities working are welcome.
-
-## Defaults
-
-Many entities come with sensible default fields and default children. For example, Individuals are created with a fake first and last name, 0-2 addresses, 0-3 emails and 0-2 phones.
+The defaults for each entity are defined in the [EntityDefault](src/Pop/EntityDefault) directory. The defaults for an Individual is as follows:
 
 ```yaml
-# src/EntityDefault/Individual.yml
 fields:
-  first_name: f.firstName
-  last_name: f.lastName
+  first_name: f.firstName # a realistic first name
+  last_name: f.lastName # a realistic first name
 children:
-  - Address: 0-2
-  - Email: 0-3
-  - Phone: 0-2
+  - Address: 0-2  # creates up to 2 postal addresses
+  - Email: 0-3 # creates up to 3 email addresses
+  - Phone: 0-2 # creates up to 2 phone numbers
 ```
 
-## Choosing from a list
+### Fields
 
-When a field is a yaml dictionary, Pop will choose a key from the dictionary. Keys with higher values are more likely to be selected.
+Instead of using the defaults, you can specify the fields you want to create as follows:
+
+```yaml
+- Individual: 500
+  fields:
+    job_title: Fundraiser
+```
+
+### Children
+
+You can also define child entities. The following example creates 500 donors and creates between 10 and 100 donations.
+
+```yaml
+- Individual: 500
+  children:
+  - Contribution: 10-100
+```
+
+Note that the count of entities can be specified as a range with lower and upper limits as in the Contribution example above.
+
+### Choosing fields
+
+Sometimes it is useful to supply a list of values for a field and have Pop choose one for you each time an entity is created:
 
 ```yaml
 - Individual: 500
@@ -86,41 +87,61 @@ When a field is a yaml dictionary, Pop will choose a key from the dictionary. Ke
       Fundraiser: 10 # ~ 250 fundraisers
 ```
 
-## Modifiers
+Higher value fields are more likely to be picked.
 
-Pop will search for fields matching certain patterns and replace them as follows
+### Using Faker
 
-### Faker methods
-
-`f.<methodName>[,param]...`
-
-will call a [faker method](https://github.com/fzaninotto/Faker) with optional parameters
+You can also ask Pop to use the [Faker library](https://github.com/fzaninotto/Faker) to generate field values. For example, you can use the Faker jobTitle method as follows:
 
 ```yaml
-- Individual: 50
+- Individual: 500
   fields:
-    middle_name: f.firstName # will create middle names
-- Contribution: 500
-  fields:
-    total_amount: f.randomFloat,2,1000,2000 # contributions between 1k and 2k
-    receive_date: f.dateTimeBetween,-5 years,now # in the last 5 years
+    job_title: f.jobTitle
 ```
+
+The syntax for invoking a faker method is 'f.' followed by the method name,
+followed by any parameters, seperated by commas. Note that a capital F will
+cause the first letter of the field to be capitalised. Below are some more examples of faker methods:
+
+```yaml
+first_name: f.firstName # a random first name
+total_amount: f.randomFloat,2,1000,2000 # an amount between 1000 and 2000
+receive_date: f.dateTimeBetween,-5 years,now # a date in the last 5 years
+event_title: F.words,3,1 # three words
+description: f.paragraph,1 # a paragraph
+```
+
+See https://github.com/fzaninotto/Faker for a full list of methods.
 
 ### Random entities
 
-`r.<Enity>`
+Sometimes it is useful to pick a random entity as the field value of another entity. This happens automatically for required fields (for example a Event and a Contact are randomly selected each time a Participant is created). Sometimes it is useful to request a random Entity tag, which you can do as follows:
 
-Returns a random entity id.
+```yaml
+- EntityTag: 1
+  fields:
+    entity_table: civicrm_activity
+    tag_id: r.Activity
+```
 
 ### Random options
 
-`choose`
+Required options are populated automatically. Sometimes, you may want to request that pop chooses a random option from those that are available. To do this, specify choose (only valid for fields that can be passed to [Entity].getoptions API).
 
-Returns a random option key for this field (only valid for fields that can be passed to [Entity].getoptions API).
+```yaml
+- Event: 1
+  fields:
+    participant_listing_id: choose
+```
+
+# Supported entities
+
+The most common CiviCRM entities are tested to ensure they work with Pop. Other entities may or may not work. The entityProvider function in the [Pop test suite](https://github.com/michaelmcandrew/cv/blob/pop/tests/Command/PopCommandTest.php)) tests has the most up to date list of tested entities.
 
 # Hopes and dreams
-
 * More support for entities. For many, the issues can be solved by updating the underlying API (adding api.required for certain fields, etc.)
 * use twig as templating language for fields (in the same way that ansible uses Jinja)
+* command to create one set of entities, rather than read from a pop file e.g. `civipop -e Individual -c 300`
+* read from stdin
 * allow fields to duplicate each other. So that, for example, email can be set as {$first_name}.{$last_name}@example.org
 * create a batch for all entities each time pop is run so that they can be easily found and deleted

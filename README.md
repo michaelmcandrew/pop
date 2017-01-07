@@ -14,7 +14,7 @@ cv pop /path/to/pop.yml
 
 Pop is also available via composer:
 
-`composer require michaelmcandrew\pop`
+`composer require michaelmcandrew/pop`
 
 ## Syntax
 

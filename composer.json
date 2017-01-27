@@ -6,7 +6,7 @@
         "fzaninotto/faker": "@stable",
         "twig/twig": "@stable"
     },
-    "license": "AGPL-3.0",
+    "license": "MIT",
     "authors": [{
         "name": "Michael McAndrew",
         "email": "michaelmcandrew@thirdsectordesign.org"

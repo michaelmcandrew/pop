@@ -103,6 +103,8 @@ class Pop {
    * created here at a later date
    */
   function createBatch(){
+
+    //TODO: Add new Pop batch type
     $now = new \DateTime;
     $this->batchName = 'pop '.$now->format('Y-m-d H:i:s');
     $result = \civicrm_api3('Batch', 'create', array('name' => $batchName, 'title' => $batchName, 'status_id' => 'Open'));

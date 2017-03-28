@@ -11,13 +11,13 @@ class EntityStore {
 
   private $entityParams = array('Event' => array('is_template' => false));
 
-  function getRandom($entity, $filter = NULL){
+  function getRandom($entity, $filter = []){
 
     $key = $this->getKey($entity, $filter);
     return $this->store[$key][$this->getRandomId($entity, $filter)];
   }
 
-  function getSpecific($entity, $filter = NULL, $id){
+  function getSpecific($entity, $filter = [], $id){
     $key = $this->getKey($entity, $filter);
     if(!isset($this->store[$key])){
       $this->init($entity, $filter);
@@ -25,7 +25,7 @@ class EntityStore {
     return $this->store[$key][$id];
   }
 
-  function getRandomId($entity, $filter = NULL){
+  function getRandomId($entity, $filter = []){
     $key = $this->getKey($entity, $filter);
     if(!isset($this->store[$key])){
       $this->init($entity, $filter);
@@ -47,11 +47,11 @@ class EntityStore {
   }
 
   function init($entity, $filter){
-    if(isset($entityParams[$entity])){
-      $filter = array_merge($filter, $entityParams[$entity]);
+    if(isset($this->entityParams[$entity])){
+      $filter = array_merge($filter, $this->entityParams[$entity]);
     }
     $params = array_merge($filter, array('options' => array('limit' => 10000)));
-    $result = civicrm_api3($entity, 'get', $params);
+        $result = civicrm_api3($entity, 'get', $params);
     $this->store[$this->getKey($entity, $filter)] = $result['values'];
   }
 

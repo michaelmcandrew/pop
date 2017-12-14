@@ -2,6 +2,7 @@
 namespace Civi\Pop;
 
 use Faker;
+use Symfony\Component\Yaml\Yaml;
 use Civi\Pop\Populator;
 use Civi\Pop\EntityStore;
 use Civi\Pop\OptionStore;
@@ -49,7 +50,8 @@ class Pop {
     // Define where to find Pop yml files
     $this->entityDefaultDir = __DIR__.DIRECTORY_SEPARATOR.'EntityDefault'.DIRECTORY_SEPARATOR;
 
-    $this->defaultDefinition = yaml_parse_file("{$this->entityDefaultDir}default.yml");
+    $this->defaultDefinition = Yaml::parse("{$this->entityDefaultDir}default.yml");
+
   }
 
   function process($file){
@@ -89,7 +91,7 @@ class Pop {
   function load($file){
 
     // load the yaml file
-    $this->instructions = yaml_parse_file($file);
+    $this->instructions = Yaml::parse($file);
     if(!$this->instructions){
       $this->log("Error: could not open yaml file: ($file)", 'error');
       exit(1);
@@ -124,7 +126,7 @@ class Pop {
     // Commplain if this is not the case.
     if(count($instruction) != 1){
       $this->log("Error: badly formatted instruction", 'error');
-      $this->log(yaml_emit($original), 'error');
+      $this->log(Yaml::dump($original), 'error');
       exit(1);
     }
 
@@ -132,7 +134,7 @@ class Pop {
     $definition['entity'] = key($instruction);
     if(!in_array($definition['entity'], $this->availableEntities)){
       $this->log("Error: could not find entity: {$definition['entity']} (yaml below)", 'error');
-      $this->log(yaml_emit($original));
+      $this->log(Yaml::dump($original));
       exit(1);
     }
 
@@ -153,7 +155,7 @@ class Pop {
   function backfill($definition) {
 
     // get defaults for this entity, if they exist
-    $entityDefault = yaml_parse_file("{$this->entityDefaultDir}{$definition['entity']}.yml");
+    $entityDefault = Yaml::parse("{$this->entityDefaultDir}{$definition['entity']}.yml");
 
     // backfill with default fields for this entity
     if(isset($entityDefault['fields'])){

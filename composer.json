@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "fzaninotto/faker": "@stable",
-        "twig/twig": "@stable"
+        "twig/twig": "@stable",
+        "symfony/yaml": "^4.0"
     },
     "license": "MIT",
     "authors": [{

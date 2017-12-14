@@ -5,7 +5,7 @@
     "require": {
         "fzaninotto/faker": "@stable",
         "twig/twig": "@stable",
-        "symfony/yaml": "^4.0"
+        "symfony/yaml": "@stable"
     },
     "license": "MIT",
     "authors": [{

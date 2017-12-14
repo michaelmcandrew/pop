@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "df603096baa7e47251f5597ec6b0841a",
+    "content-hash": "29118c34e03fe3e2d0678564f49067e5",
     "packages": [
         {
             "name": "fzaninotto/faker",
@@ -245,7 +245,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "fzaninotto/faker": 0,
-        "twig/twig": 0
+        "twig/twig": 0,
+        "symfony/yaml": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

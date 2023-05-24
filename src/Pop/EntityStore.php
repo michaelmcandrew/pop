@@ -51,7 +51,7 @@ class EntityStore {
       $filter = array_merge($filter, $this->entityParams[$entity]);
     }
     $params = array_merge($filter, array('options' => array('limit' => 10000)));
-        $result = civicrm_api3($entity, 'get', $params);
+        $result = Connection::api3($entity, 'get', $params);
     $this->store[$this->getKey($entity, $filter)] = $result['values'];
   }
 

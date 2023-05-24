@@ -43,7 +43,7 @@ class Pop {
     // Households are also entities)
 
     $this->availableEntities = array_merge(
-      \civicrm_api3('Entity', 'get')['values'],
+      Connection::api3('Entity', 'get')['values'],
       array('Individual', 'Household', 'Organization')
     );
 
@@ -189,7 +189,7 @@ class Pop {
   function getAvailableFields($entity){
 
     if(!isset($this->availableFields[$entity])){
-      $this->availableFields[$entity] = \civicrm_api3($entity, 'getfields', array('api_action'=> 'create'))['values'];
+      $this->availableFields[$entity] = Connection::api3($entity, 'getfields', array('api_action'=> 'create'))['values'];
     }
     return $this->availableFields[$entity];
   }
@@ -279,7 +279,7 @@ class Pop {
       }
     }
     try{
-      $result = \civicrm_api3($entity, 'create', $fields);
+      $result = Connection::api3($entity, 'create', $fields);
     }catch(\CiviCRM_API3_Exception $e){
       $this->recordFailure($entity, $fields, $e->getMessage());
       return;

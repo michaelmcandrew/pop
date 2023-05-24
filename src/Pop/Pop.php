@@ -30,10 +30,10 @@ class Pop {
     $this->faker = Faker\Factory::create();
 
     // Initialise entity store
-    $this->entityStore = new entityStore();
+    $this->entityStore = new EntityStore();
 
     // Initialise option store
-    $this->optionStore = new optionStore();
+    $this->optionStore = new OptionStore();
 
     // Initialise entity
     //

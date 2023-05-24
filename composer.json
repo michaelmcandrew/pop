@@ -6,7 +6,9 @@
         "fzaninotto/faker": "@stable",
         "twig/twig": "@stable",
         "symfony/yaml": "@stable",
-        "civicrm/composer-downloads-plugin": "^3.0"
+        "civicrm/composer-downloads-plugin": "^3.0",
+        "clippy/std": "~0.4.3",
+        "clippy/container": "~1.2"
     },
     "license": "MIT",
     "authors": [{

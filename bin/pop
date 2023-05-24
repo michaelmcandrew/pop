@@ -1,10 +1,43 @@
 #!/usr/bin/env php
 <?php
 
+namespace Clippy;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Civi\Pop\Pop;
+use Symfony\Component\Yaml\Yaml;
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
+$c = clippy()->register(plugins());
 
-echo "hi\n";
-\Civi\Pop\Connection::connect('cv pipe vjt --cwd=/Users/totten/bknix/build/dmaster/web/');
+$c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface $output) {
 
-$r = \Civi\Pop\Connection::api3('System', 'get', ['limit' => 1]);
-print_r($r);
+  try {
+    \Civi\Pop\Connection::connect('cv pipe vjt');
+  }
+  catch (\Throwable $t) {
+    $io->error([
+      'Failed to locate CiviCRM. Suggestions:',
+      ' - Ensure that cv is installed',
+      ' - Run this command from inside the CiviCRM web root',
+      " - Set an explicit CiviCRM location:\n   export CIVICRM_BOOT=\"Auto://var/www/example.org\"",
+    ]);
+    // return 1;
+    throw $t;
+  }
+
+  $pop = new Pop($output);
+  $pop->setInteractive(TRUE);
+
+  $fs = new Filesystem();
+  if($fs->isAbsolutePath($file)){
+    $pop->process($file);
+  }
+  else{
+    $pop->process($_SERVER['PWD']. DIRECTORY_SEPARATOR . $file);
+  }
+
+  $output->write(Yaml::dump($pop->getSummary()), OutputInterface::OUTPUT_RAW);
+
+});

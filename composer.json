@@ -15,12 +15,27 @@
     }],
     "autoload": {
         "psr-4": {
-            "Civi\\Pop\\": "src/Pop"
+            "Civi\\Pop\\": "src/Pop",
+            "Civi\\Pipe\\": "extern/Civi/Pipe"
         }
     },
     "config": {
         "allow-plugins": {
             "civicrm/composer-downloads-plugin": true
         }
+    },
+    "extra": {
+      "downloads": {
+        "BasicPipeClient": {
+          "version": "5.61.0",
+          "url": "https://raw.githubusercontent.com/civicrm/civicrm-core/{$version}/Civi/Pipe/BasicPipeClient.php",
+          "path": "extern/Civi/Pipe/BasicPipeClient.php"
+        },
+        "JsonRpcMethodException": {
+          "version": "5.61.0",
+          "url": "https://raw.githubusercontent.com/civicrm/civicrm-core/{$version}/Civi/Pipe/JsonRpcMethodException.php",
+          "path": "extern/Civi/Pipe/JsonRpcMethodException.php"
+        }
+      }
     }
 }

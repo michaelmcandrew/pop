@@ -8,7 +8,8 @@
         "symfony/yaml": "@stable",
         "civicrm/composer-downloads-plugin": "^3.0",
         "clippy/std": "~0.4.3",
-        "clippy/container": "~1.2"
+        "clippy/container": "~1.2",
+        "symfony/filesystem": "~4.4"
     },
     "license": "MIT",
     "authors": [{

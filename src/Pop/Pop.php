@@ -50,7 +50,7 @@ class Pop {
     // Define where to find Pop yml files
     $this->entityDefaultDir = __DIR__.DIRECTORY_SEPARATOR.'EntityDefault'.DIRECTORY_SEPARATOR;
 
-    $this->defaultDefinition = Yaml::parse("{$this->entityDefaultDir}default.yml");
+    $this->defaultDefinition = Yaml::parseFile("{$this->entityDefaultDir}default.yml");
 
   }
 
@@ -91,7 +91,7 @@ class Pop {
   function load($file){
 
     // load the yaml file
-    $this->instructions = Yaml::parse($file);
+    $this->instructions = Yaml::parseFile($file);
     if(!$this->instructions){
       $this->log("Error: could not open yaml file: ($file)", 'error');
       exit(1);
@@ -155,7 +155,7 @@ class Pop {
   function backfill($definition) {
 
     // get defaults for this entity, if they exist
-    $entityDefault = Yaml::parse("{$this->entityDefaultDir}{$definition['entity']}.yml");
+    $entityDefault = Yaml::parseFile("{$this->entityDefaultDir}{$definition['entity']}.yml");
 
     // backfill with default fields for this entity
     if(isset($entityDefault['fields'])){

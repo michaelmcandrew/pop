@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+echo "hi\n";
+\Civi\Pop\Connection::connect('cv pipe vjt --cwd=/Users/totten/bknix/build/dmaster/web/');
+
+$r = \Civi\Pop\Connection::api3('System', 'get', ['limit' => 1]);
+print_r($r);

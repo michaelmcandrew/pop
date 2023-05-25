@@ -15,6 +15,8 @@ $c = clippy()->register(plugins());
 
 $c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface $output) {
 
+  $startTime = time();
+
   try {
     \Civi\Pop\Connection::connect('php -d memory_limit=-1 `which cv` pipe vjt');
   }
@@ -54,5 +56,8 @@ $c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface
   }
 
   $output->write(Yaml::dump($pop->getSummary()), OutputInterface::OUTPUT_RAW);
+
+  $endTime = time();
+  $output->write(sprintf("<comment>Completed in %dm %ds\n</comment>", ($endTime - $startTime) / 60, ($endTime - $startTime) % 60));
 
 });

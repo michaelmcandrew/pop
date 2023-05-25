@@ -8,13 +8,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Civi\Pop\Pop;
 use Symfony\Component\Yaml\Yaml;
 
+ini_set('memory_limit', -1);
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 $c = clippy()->register(plugins());
 
 $c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface $output) {
 
   try {
-    \Civi\Pop\Connection::connect('cv pipe vjt');
+    \Civi\Pop\Connection::connect('php -d memory_limit=-1 `which cv` pipe vjt');
   }
   catch (\Throwable $t) {
     $io->error([

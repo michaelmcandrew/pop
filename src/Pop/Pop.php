@@ -196,6 +196,7 @@ class Pop {
 
   function getRequiredFields($entity){
     if(!isset($this->requiredFields[$entity])){
+      $this->requiredFields[$entity] = [];
       foreach($this->getAvailableFields($entity) as $availableField){
         if($availableField['api.required']){
           $this->requiredFields[$entity][$availableField['name']] = $availableField;

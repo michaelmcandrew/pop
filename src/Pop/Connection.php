@@ -40,7 +40,7 @@ class Connection {
    *   The maximum number of requests to send within a given session.
    *   If exceeded, then we will disconnect/reconnect with a new session.
    */
-  public static function connect(string $command = 'cv pipe vjt', int $bufferSize = 100 * 1024 * 1024, int $sessionLimit = 5000): void {
+  public static function connect(string $command = 'cv pipe vjt', int $bufferSize = 200 * 1024 * 1024, int $sessionLimit = 5000): void {
     static::$connectOptions = func_get_args();
     static::$sessionLimit = $sessionLimit;
     static::$pipe = new \Civi\Pipe\BasicPipeClient($command, $bufferSize);

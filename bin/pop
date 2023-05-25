@@ -31,11 +31,24 @@ $c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface
   $pop->setInteractive(TRUE);
 
   $fs = new Filesystem();
-  if($fs->isAbsolutePath($file)){
-    $pop->process($file);
+  if ($fs->isAbsolutePath($file)){
+    $absFile = $file;
   }
-  else{
-    $pop->process($_SERVER['PWD']. DIRECTORY_SEPARATOR . $file);
+  else {
+    $searchPath = [$_SERVER['PWD'], dirname(__DIR__) . '/examples'];
+    foreach ($searchPath as $searchDir) {
+      $absFile = $searchDir . DIRECTORY_SEPARATOR . $file;
+      if (file_exists($absFile)) {
+        break;
+      }
+    }
+  }
+
+  if (file_exists($absFile)) {
+    $pop->process($absFile);
+  }
+  else {
+    throw new \RuntimeException("Failed to read file: $file");
   }
 
   $output->write(Yaml::dump($pop->getSummary()), OutputInterface::OUTPUT_RAW);

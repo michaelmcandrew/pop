@@ -1,0 +1,9 @@
+## Create 1,000 individuals and enough groups/events that most
+## individuals will land in 1-3 groups/events.
+
+- Organization: 100
+- Individual: 1000
+- Group: 10
+- GroupContact: 2000
+- Event: 10
+- Participant: 2000

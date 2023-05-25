@@ -17,21 +17,13 @@ export PATH=$PWD/bin
 
 ## Usage
 
-To populate a site, you will need to create some instructions and then process them:
-
 ```
 cd /var/www/example.org
-vi new-data.yml
-pop new-data.yml
+pop basic-10k.yml
 ```
 
-<~--
-## Library
-
-Pop is also available via composer:
-
-`composer require michaelmcandrew/pop`
--->
+Note the usage of a YAML file (`basic-10k.yml`). This can be a built-in example (`basic-250.yml`, `basic-1k.yml`, `basic-10k.yml`, `basic-100k.yml`)
+or a file that you define for yourself.
 
 ## Syntax
 

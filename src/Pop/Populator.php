@@ -29,4 +29,11 @@ class Populator {
       $fields['event_id'] = $this->entityStore->getRandom('Event', array('is_template' => false))['id'];
     }
   }
+
+  function groupId($entity, &$fields) {
+    if(!isset($fields['group_id'])) {
+      $fields['group_id'] = $this->entityStore->getRandom('Group', array())['id'];
+    }
+  }
+
 }

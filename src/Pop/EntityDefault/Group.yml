@@ -1,0 +1,3 @@
+fields:
+  title: f.sentence,4
+  group_type: choose

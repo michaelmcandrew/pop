@@ -2,19 +2,28 @@
 
 A library for populating a CiviCRM site with fake data.
 
+## Requirements
+
+CiviCRM with console access and [cv](https://github.com/civicrm/cv)
+
+## Install
+
+```
+git clone https://github.com/michaelmcandrew/pop ~/src/pop
+cd pop
+composer install
+export PATH=$PWD/bin
+```
+
 ## Usage
 
-Typical usage is via a command line tool like '[cv](https://github.com/civicrm/cv)'.
-
-To populate a site with instructions in the file `/path/to/pop.yml`, type
-
 ```
-cv pop /path/to/pop.yml
+cd /var/www/example.org
+pop basic-10k.yml
 ```
 
-Pop is also available via composer:
-
-`composer require michaelmcandrew/pop`
+Note the usage of a YAML file (`basic-10k.yml`). This can be a built-in example (`basic-250.yml`, `basic-1k.yml`, `basic-10k.yml`, `basic-100k.yml`)
+or a file that you define for yourself.
 
 ## Syntax
 

@@ -30,10 +30,10 @@ class Pop {
     $this->faker = Faker\Factory::create();
 
     // Initialise entity store
-    $this->entityStore = new entityStore();
+    $this->entityStore = new EntityStore();
 
     // Initialise option store
-    $this->optionStore = new optionStore();
+    $this->optionStore = new OptionStore();
 
     // Initialise entity
     //
@@ -43,14 +43,14 @@ class Pop {
     // Households are also entities)
 
     $this->availableEntities = array_merge(
-      \civicrm_api3('Entity', 'get')['values'],
+      Connection::api3('Entity', 'get')['values'],
       array('Individual', 'Household', 'Organization')
     );
 
     // Define where to find Pop yml files
     $this->entityDefaultDir = __DIR__.DIRECTORY_SEPARATOR.'EntityDefault'.DIRECTORY_SEPARATOR;
 
-    $this->defaultDefinition = Yaml::parse("{$this->entityDefaultDir}default.yml");
+    $this->defaultDefinition = Yaml::parseFile("{$this->entityDefaultDir}default.yml");
 
   }
 
@@ -91,7 +91,7 @@ class Pop {
   function load($file){
 
     // load the yaml file
-    $this->instructions = Yaml::parse($file);
+    $this->instructions = Yaml::parseFile($file);
     if(!$this->instructions){
       $this->log("Error: could not open yaml file: ($file)", 'error');
       exit(1);
@@ -155,7 +155,7 @@ class Pop {
   function backfill($definition) {
 
     // get defaults for this entity, if they exist
-    $entityDefault = Yaml::parse("{$this->entityDefaultDir}{$definition['entity']}.yml");
+    $entityDefault = Yaml::parseFile("{$this->entityDefaultDir}{$definition['entity']}.yml");
 
     // backfill with default fields for this entity
     if(isset($entityDefault['fields'])){
@@ -189,13 +189,14 @@ class Pop {
   function getAvailableFields($entity){
 
     if(!isset($this->availableFields[$entity])){
-      $this->availableFields[$entity] = \civicrm_api3($entity, 'getfields', array('api_action'=> 'create'))['values'];
+      $this->availableFields[$entity] = Connection::api3($entity, 'getfields', array('api_action'=> 'create'))['values'];
     }
     return $this->availableFields[$entity];
   }
 
   function getRequiredFields($entity){
     if(!isset($this->requiredFields[$entity])){
+      $this->requiredFields[$entity] = [];
       foreach($this->getAvailableFields($entity) as $availableField){
         if($availableField['api.required']){
           $this->requiredFields[$entity][$availableField['name']] = $availableField;
@@ -279,7 +280,7 @@ class Pop {
       }
     }
     try{
-      $result = \civicrm_api3($entity, 'create', $fields);
+      $result = Connection::api3($entity, 'create', $fields);
     }catch(\CiviCRM_API3_Exception $e){
       $this->recordFailure($entity, $fields, $e->getMessage());
       return;

@@ -11,7 +11,7 @@ class OptionStore {
 
   function getRandomId($entity, $field){
     if(!isset($this->store[$entity][$field])){
-      $this->store[$entity][$field] = civicrm_api3($entity, 'getoptions', array(
+      $this->store[$entity][$field] = Connection::api3($entity, 'getoptions', array(
         'sequential' => 1,
         'field' => $field,
       ))['values'];

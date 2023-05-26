@@ -1,0 +1,63 @@
+#!/usr/bin/env php
+<?php
+
+namespace Clippy;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Civi\Pop\Pop;
+use Symfony\Component\Yaml\Yaml;
+
+ini_set('memory_limit', -1);
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+$c = clippy()->register(plugins());
+
+$c['app']->main('file', function(string $file, SymfonyStyle $io, OutputInterface $output) {
+
+  $startTime = time();
+
+  try {
+    \Civi\Pop\Connection::connect('php -d memory_limit=-1 `which cv` pipe vjt');
+  }
+  catch (\Throwable $t) {
+    $io->error([
+      'Failed to locate CiviCRM. Suggestions:',
+      ' - Ensure that cv is installed',
+      ' - Run this command from inside the CiviCRM web root',
+      " - Set an explicit CiviCRM location:\n   export CIVICRM_BOOT=\"Auto://var/www/example.org\"",
+    ]);
+    // return 1;
+    throw $t;
+  }
+
+  $pop = new Pop($output);
+  $pop->setInteractive(TRUE);
+
+  $fs = new Filesystem();
+  if ($fs->isAbsolutePath($file)){
+    $absFile = $file;
+  }
+  else {
+    $searchPath = [$_SERVER['PWD'], dirname(__DIR__) . '/examples'];
+    foreach ($searchPath as $searchDir) {
+      $absFile = $searchDir . DIRECTORY_SEPARATOR . $file;
+      if (file_exists($absFile)) {
+        break;
+      }
+    }
+  }
+
+  if (file_exists($absFile)) {
+    $pop->process($absFile);
+  }
+  else {
+    throw new \RuntimeException("Failed to read file: $file");
+  }
+
+  $output->write(Yaml::dump($pop->getSummary()), OutputInterface::OUTPUT_RAW);
+
+  $endTime = time();
+  $output->write(sprintf("<comment>Completed in %dm %ds\n</comment>", ($endTime - $startTime) / 60, ($endTime - $startTime) % 60));
+
+});

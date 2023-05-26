@@ -5,7 +5,11 @@
     "require": {
         "fzaninotto/faker": "@stable",
         "twig/twig": "@stable",
-        "symfony/yaml": "@stable"
+        "symfony/yaml": "@stable",
+        "civicrm/composer-downloads-plugin": "^3.0",
+        "clippy/std": "~0.4.3",
+        "clippy/container": "~1.2",
+        "symfony/filesystem": "~4.4"
     },
     "license": "MIT",
     "authors": [{
@@ -14,7 +18,30 @@
     }],
     "autoload": {
         "psr-4": {
-            "Civi\\Pop\\": "src/Pop"
+            "Civi\\Pop\\": "src/Pop",
+            "Civi\\Pipe\\": "extern/Civi/Pipe"
         }
+    },
+    "config": {
+        "platform": {
+            "php": "7.3.0"
+        },
+        "allow-plugins": {
+            "civicrm/composer-downloads-plugin": true
+        }
+    },
+    "extra": {
+      "downloads": {
+        "BasicPipeClient": {
+          "version": "5.61.0",
+          "url": "https://raw.githubusercontent.com/civicrm/civicrm-core/{$version}/Civi/Pipe/BasicPipeClient.php",
+          "path": "extern/Civi/Pipe/BasicPipeClient.php"
+        },
+        "JsonRpcMethodException": {
+          "version": "5.61.0",
+          "url": "https://raw.githubusercontent.com/civicrm/civicrm-core/{$version}/Civi/Pipe/JsonRpcMethodException.php",
+          "path": "extern/Civi/Pipe/JsonRpcMethodException.php"
+        }
+      }
     }
 }
